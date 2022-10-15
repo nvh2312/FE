@@ -96,7 +96,7 @@ const SignInPage = () => {
           <div className="flex items-center justify-between px-44 mt-8">
             <div className="flex items-center">
               <span className="text-black text-xl">
-                Bạn đã chưa có tài khoản? &nbsp;
+                Bạn chưa có tài khoản? &nbsp;
               </span>
 
               <Link
