@@ -14,6 +14,8 @@ import AuthenticationPage from "./AuthenticationPage";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { toast } from "react-toastify";
+import axios from "axios";
+import userApi from "../api/userApi";
 
 const schema = yup.object({
   fullname: yup
@@ -63,13 +65,18 @@ const SignUpPage = () => {
 
   const navigate = useNavigate();
 
-  const handleSignUp = (values) => {
+  const handleSignUp = async (values) => {
+    console.log(values);
+    const data = {
+      name: values.fullname,
+      email: values.email,
+      password: values.password,
+      passwordConfirm: values.retypePassword
+    }
     if (!isValid) return;
-    console.log(
-      "🚀 ~ file: SignUpPage.jsx ~ line 39 ~ handleSignUp ~ values",
-      values
-    );
-    toast.success("Đăng ký tài khoản thành công");
+    try {
+      const result = await userApi.register(data);
+      toast.success("Đăng ký tài khoản thành công");
     reset({
       fullname: "",
       email: "",
@@ -81,6 +88,11 @@ const SignUpPage = () => {
     const timeout = setTimeout(() => {
       navigate("/sign-in");
     }, 1500);
+    } catch (error) {
+      toast.error(error.message);
+
+    }
+    
   };
 
   return (

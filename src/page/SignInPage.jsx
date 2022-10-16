@@ -13,6 +13,7 @@ import AuthenticationPage from "./AuthenticationPage";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { toast } from "react-toastify";
+import userApi from "../api/userApi";
 
 const schema = yup.object({
   email: yup
@@ -45,19 +46,25 @@ const SignInPage = () => {
   });
   const navigate = useNavigate();
 
-  const handleSignIn = (values) => {
-    if (!isValid) return;
-    console.log(
-      "🚀 ~ file: SignInPage.jsx ~ line 45 ~ handleSignIn ~ values",
-      values
-    );
+  const handleSignIn = async (values) => {
+    try {
+      if (!isValid) return;
+      await userApi.login(values);
+      
+  
     reset({
       email: "",
       password: "",
     });
     toast.success("Chào mừng bạn đến HC.VN");
     navigate("/");
+    } catch (err) {
+    toast.error(err.message);
+
+    }
   };
+
+    
   return (
     <div className="bg-[#f8f8fc]">
       <Header></Header>
